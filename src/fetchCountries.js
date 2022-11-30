@@ -6,7 +6,9 @@ export function fetchCountries(name) {
       if (response.status === 404) {
         throw new Error('Oops, there is no country with that name');
       }
-      throw new Error(response.status);
+      throw new Error(
+        `Response status: ${response.statusText}. Code ${response.status}`
+      );
     }
 
     return response.json();
