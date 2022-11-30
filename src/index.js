@@ -16,20 +16,25 @@ refs.input.addEventListener(`input`, debounce(onCountryInput, DEBOUNCE_DELAY));
 
 function onCountryInput(event) {
   event.preventDefault();
-  const nameCountry = event.target.value.trim();
+  console.log(refs.input.value);
+
+  const nameCountry = refs.input.value.trim();
+
+  //   const nameCountry = event.target.value.trim();
 
   fetchCountries(nameCountry)
-    .then(showContainerCountry)
+    .then(renderContainerCountry)
+    .then(renderListCountry)
+
     .catch(error => {
       Notiflix.Notify.failure('Error');
     });
-
   console.log(`выполняем HTTP запрос`);
 }
 
-// let country;
+// let countries = [];
 
-function showContainerCountry(nameCountry) {
+function renderContainerCountry(nameCountry) {
   const { name, capital, population, flags, languages } = nameCountry[0];
   const country = nameCountry.map(
     ({ name, capital, population, flags, languages }) => ({
@@ -40,10 +45,11 @@ function showContainerCountry(nameCountry) {
       languages: Object.values(languages),
     })
   );
+
   const countryInfo = country[0];
   const template = `
     <h1 class="country-title">
-      <img class="country-pic" src="${countryInfo.flag}" alt="Flag" width="100"
+      <img class="country-pic" src="${countryInfo.flag}" alt="Flag" width="40"
       >${countryInfo.name}
     </h1>
     <p class="country-descr"><span class="country-data">Capital: </span
@@ -52,10 +58,71 @@ function showContainerCountry(nameCountry) {
     >${countryInfo.population.toLocaleString()}</p>
     <p class="country-descr"><span class="country-data">Languages: </span
     >${countryInfo.languages.join(', ')}</p>`;
-
-  console.log(template);
-  console.log(countryInfo);
+  return (refs.infoCountry.innerHTML = template);
 }
+
+function clearCountryElems() {
+  countryListElem.innerHTML = '';
+  countryInfoElem.innerHTML = '';
+}
+
+function renderListCountry({ name, capital, population, flags, languages }) {
+  const { names } = countries;
+  // const country = nameCountry.map(
+  //     ({ name, capital, population, flags, languages }) => ({
+  //         name: name.official,
+  //         capital: capital[0],
+  //         population,
+  //         flag: flags.svg,
+  //         languages: Object.values(languages),
+  //     })
+  // );
+
+  const listCountryItem = countries.map(country => {
+    const countryElement = document.createElement('li');
+    countryElement.classList.add('country-item');
+    countryElement.title = 'Click me!';
+    countryElement.innerHTML = `
+    <li class="country-item">
+    <p class="country-name">
+      <img class="country-pic" src="${countryInfo.flag}" alt="Flag" width="40"
+      >${countryInfo.name}
+    </p>
+    </li>`;
+
+    listCountryItem.set(countryElement, country);
+
+    console.log(countries);
+  });
+}
+
+function showError() {}
+
+// countryElement.innerHTML = `
+//           <img class="country-pic" src="${country.flag}" alt="Flag" width="40">
+//           <span class="country-name">${country.name}</span>`;
+
+// function renderCountries(countries) {
+//   // if (countries.length === 0) {
+//   //   Notiflix.Notify.failure('Oops, there is no country with that name');
+//   //   return;
+//   // }
+
+//   if (countries.length > 10) {
+//     Notiflix.Notify.info(
+//       'Too many matches found. Please enter a more specific name.'
+//     );
+//     return;
+//   }
+
+//   if (countries.length > 1) {
+//     renderCountriesList(countries);
+//     return;
+//   }
+
+//   // if (countries.length === 1)
+//   renderCountryInfo(country[0]);
+// }
 
 // function renderCountry(countryInfo) {
 //   refs.infoCountry.innerHTML = `
