@@ -20,8 +20,12 @@ function onCountryInput(event) {
 
   const nameCountry = refs.input.value.trim();
 
+  if (nameCountry === '') {
+    refs.listCountry.innerHTML = '';
+    refs.infoCountry.innerHTML = '';
+    return;
+  }
   //   const nameCountry = event.target.value.trim();
-
   fetchCountries(nameCountry)
     .then(renderListCountry)
     .then(renderContainerCountry)
@@ -37,6 +41,45 @@ function onCountryInput(event) {
 
 function showError(error) {
   Notiflix.Notify.failure(`Перепрошую, у вас помилка`);
+}
+
+function renderListCountry(nameCountry) {
+  const { name, flags } = nameCountry;
+  console.log(nameCountry);
+  const countries = nameCountry.map(({ name, flags }) => ({
+    name: name.official,
+    flag: flags.svg,
+  }));
+
+  console.log(countries);
+
+  const listCountryItems = countries.map(country => {
+    const listCountryItem = document.createElement('li');
+    const listCountryPicElement = document.createElement('img');
+    listCountryItem.classList.add('country-item');
+    listCountryItem.textContent = country.name;
+    listCountryPicElement.classList.add('country-pic');
+    listCountryItem.innerHTML = `<li class="country-item">
+    <img class="country-pic" src="${country.flag}" alt="Flag" width="40">${country.name}
+    </li>`;
+    return listCountryItem;
+  });
+
+  refs.listCountry.append(...listCountryItems);
+
+  if (countries.length > 10) {
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+    return;
+  }
+
+  if (countries.length > 10) {
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+    return;
+  }
 }
 
 function renderContainerCountry(nameCountry) {
@@ -63,61 +106,12 @@ function renderContainerCountry(nameCountry) {
     <p class="country-descr"><span class="country-data">Languages: </span
     >${countryInfo.languages.join(', ')}</p>`;
   refs.infoCountry.innerHTML = template;
-
-  //   const countryListElement = document.createElement('li');
-  //   countryListElement.classList.add('country-item');
-  //   countryListElement.title = 'Click me!';
-  //   refs.listCountry.innerHTML = `
-  //       <li class="country-item">
-  //       <p class="country-name">
-  //         <img class="country-pic" src="${countryInfo.flag}" alt="Flag" width="40"
-  //         >${countryInfo.name}
-  //       </p>
-  //       </li>`;
 }
 
-// function clearCountryElems() {
-//   //   countryListElem.innerHTML = '';
-//   refs.infoCountry.innerHTML = '';
+// function clearCountryElements() {
+refs.listCountry.innerHTML = '';
+refs.infoCountry.innerHTML = '';
 // }
-
-function renderListCountry(nameCountry) {
-  const { name, flags } = nameCountry;
-  console.log(nameCountry);
-  const countries = nameCountry.map(({ name, flags }) => ({
-    name: name.official,
-    flag: flags.svg,
-  }));
-  console.log(countries);
-
-  // countries.forEach(country => {
-  //   const countryListElement = document.createElement('li');
-  //   const countryListPicElement = document.createElement('img');
-  //   countryListElement.classList.add('country-item');
-  //   countryListPicElement.classList.add('country-pic');
-  //   refs.listCountry.innerHTML = `
-  //       <li class="country-item">
-  //         <img class="country-pic" src="${country.flag}" alt="Flag" width="20"
-  //         >${country.name}
-  //       </li>`;
-  // });
-
-  const listCountryItems = countries.map(country => {
-    const listCountryItem = document.createElement('li');
-    const listCountryPicElement = document.createElement('img');
-    listCountryItem.classList.add('country-item');
-    listCountryItem.textContent = country.name;
-    listCountryPicElement.classList.add('country-pic');
-    listCountryItem.innerHTML = `<li class="country-item">
-    <img class="country-pic" src="${country.flag}" alt="Flag" width="40">${country.name}
-    </li>`;
-    return listCountryItem;
-    // listCountryItem.set(countryListElement, country);
-    // console.log(countries);
-  });
-
-  refs.listCountry.append(...listCountryItems);
-}
 
 // `
 //           <li class="country-item">
