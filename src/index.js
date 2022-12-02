@@ -24,10 +24,11 @@ function onCountryInput(event) {
     return;
   }
   //   const nameCountry = event.target.value.trim();
-  fetchCountries(nameCountry).then(renderCountries);
-  // .catch(error => {
-  //   Notiflix.Notify.failure('Oops, there is no country with that name');
-  // });
+  fetchCountries(nameCountry)
+    .then(renderCountries)
+    .catch(error => {
+      Notiflix.Notify.failure('Oops, there is no country with that name');
+    });
   clearCountryElements();
   console.log(`выполняем HTTP запрос`);
 }
