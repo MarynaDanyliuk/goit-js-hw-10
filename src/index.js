@@ -57,25 +57,16 @@ function renderCountries(nameCountry) {
     clearCountryElements();
     return;
   } else if (countries.length === 1) {
-    refs.listCountry.innerHTML = '';
-    console.log(`Хочу уже сделать!`);
+    clearCountryElements(refs.listCountry.innerHTML);
+    // refs.listCountry.innerHTML = '';
+    // console.log(`Хочу уже это сделать!`);
     renderContainerCountry(countries);
   } else if (1 < countries.length < 10) {
-    clearCountryElements(refs.listCountry.innerHTML);
     renderListCountry(countries);
   }
 }
 
 function renderListCountry(countries) {
-  // const { name, flags } = nameCountry;
-  // console.log(nameCountry);
-  // const countries = nameCountry.map(({ name, flags }) => ({
-  //   name: name.official,
-  //   flag: flags.svg,
-  // }));
-
-  // console.log(countries);
-
   const listCountryItems = countries.map(country => {
     const listCountryItem = document.createElement('li');
     const listCountryPicElement = document.createElement('img');
@@ -100,6 +91,11 @@ function renderContainerCountry(countries) {
       <p class="country-descr"><span class="country-data">Languages: </span>${country.languages}</p>`;
 }
 
+function clearCountryElements() {
+  refs.listCountry.innerHTML = '';
+  refs.infoCountry.innerHTML = '';
+}
+
 // refs.infoCountry.innerHTML = country
 //   .map(({ name, capital, population, flags, languages }) => {
 //     return `<h1 class="country-title">
@@ -113,11 +109,6 @@ function renderContainerCountry(countries) {
 //     )}</p>`;
 //   })
 //   .join(``);
-
-function clearCountryElements() {
-  refs.listCountry.innerHTML = '';
-  refs.infoCountry.innerHTML = '';
-}
 
 // function createCountryData(nameCountry) {
 //   const { name, capital, population, flags, languages } = nameCountry;
