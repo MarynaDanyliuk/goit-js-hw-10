@@ -20,41 +20,23 @@ function onCountryInput(event) {
   const nameCountry = refs.input.value.trim();
 
   if (nameCountry === '') {
-    refs.listCountry.innerHTML = '';
-    refs.infoCountry.innerHTML = '';
+    clearCountryElements();
     return;
   }
   //   const nameCountry = event.target.value.trim();
-  fetchCountries(nameCountry)
-    .then(renderCountries)
-    .catch(error => {
-      Notiflix.Notify.failure('Oops, there is no country with that name');
-    });
+  fetchCountries(nameCountry).then(renderCountries);
+  // .catch(error => {
+  //   Notiflix.Notify.failure('Oops, there is no country with that name');
+  // });
+  clearCountryElements();
   console.log(`выполняем HTTP запрос`);
 }
 
 // __________FUNCTIONS___________________
 
-// function createCountryData(nameCountry) {
-//   const { name, capital, population, flags, languages } = nameCountry;
-//   // console.log(nameCountry);
-//   const countries = nameCountry.map(
-//     ({ name, capital, population, flags, languages }) => ({
-//       name: name.official,
-//       capital: capital[0],
-//       population,
-//       flag: flags.svg,
-//       languages: Object.values(languages),
-//     })
-//   );
-//   return countries;
-// }
-
-// console.log(createCountryData);
-
 function renderCountries(nameCountry) {
   const { name, capital, population, flags, languages } = nameCountry;
-  // console.log(nameCountry);
+
   const countries = nameCountry.map(
     ({ name, capital, population, flags, languages }) => ({
       name: name.official,
@@ -71,19 +53,17 @@ function renderCountries(nameCountry) {
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
+    clearCountryElements();
     return;
+  } else if (countries.length === 1) {
+    refs.listCountry.innerHTML = '';
+    console.log(`Хочу уже сделать!`);
+    renderContainerCountry(countries);
+  } else if (1 < countries.length < 10) {
+    clearCountryElements(refs.listCountry.innerHTML);
+    renderListCountry(countries);
   }
-  if (1 < countries.length < 10) {
-    return renderListCountry(countries);
-  }
-  refs.listCountry.innerHTML = '';
-  renderContainerCountry(countries[0]);
-  // renderContainerCountry(countries[0]);
-  // refs.listCountry.innerHTML = '';
-  // renderContainerCountry(nameCountry);
 }
-
-// console.log(countries);
 
 function renderListCountry(countries) {
   // const { name, flags } = nameCountry;
@@ -110,32 +90,74 @@ function renderListCountry(countries) {
   refs.listCountry.append(...listCountryItems);
 }
 
-function renderContainerCountry(country) {
-  // const { name, capital, population, flags, languages } = nameCountry[0];
-  // const countries = nameCountry.map(
-  //   ({ name, capital, population, flags, languages }) => ({
-  //     name: name.official,
-  //     capital: capital[0],
-  //     population,
-  //     flag: flags.svg,
-  //     languages: Object.values(languages),
-  //   })
-  // );
-  // const countryInfo = countries[0];
-
-  refs.infoCountry.innerHTML = `
-    <h1 class="country-title">
-      <img class="country-pic" src="${country.flag}" alt="Flag" width="40"
-      >${country.name}
-    </h1>
-    <p class="country-descr"><span class="country-data">Capital: </span
-    >${country.capital}</p>
-    <p class="country-descr"><span class="country-data">Population: </span
-    >${countryInfo.population.toLocaleString()}</p>
-    <p class="country-descr"><span class="country-data">Languages: </span
-    >${countryInfo.languages.join(', ')}</p>`;
-  // refs.infoCountry.innerHTML = template;
+function renderContainerCountry(countries) {
+  const country = countries[0];
+  refs.infoCountry.innerHTML = `<h1 class="country-title">
+      <img class="country-pic" src="${country.flag}" alt="Flag" width="40">${country.name}</h1>
+      <p class="country-descr"><span class="country-data">Capital: </span>${country.capital}</p>
+      <p class="country-descr"><span class="country-data">Population: </span>${country.population}</p>
+      <p class="country-descr"><span class="country-data">Languages: </span>${country.languages}</p>`;
 }
+
+// refs.infoCountry.innerHTML = country
+//   .map(({ name, capital, population, flags, languages }) => {
+//     return `<h1 class="country-title">
+//     <img class="country-pic" src="${flags.svg}" alt="Flag" width="40">${
+//       name.official
+//     }</h1>
+//     <p class="country-descr"><span class="country-data">Capital: </span>${capital}</p>
+//     <p class="country-descr"><span class="country-data">Population: </span>${population}</p>
+//     <p class="country-descr"><span class="country-data">Languages: </span>${Object.values(
+//       languages
+//     )}</p>`;
+//   })
+//   .join(``);
+
+function clearCountryElements() {
+  refs.listCountry.innerHTML = '';
+  refs.infoCountry.innerHTML = '';
+}
+
+// function createCountryData(nameCountry) {
+//   const { name, capital, population, flags, languages } = nameCountry;
+//   // console.log(nameCountry);
+//   const countries = nameCountry.map(
+//     ({ name, capital, population, flags, languages }) => ({
+//       name: name.official,
+//       capital: capital[0],
+//       population,
+//       flag: flags.svg,
+//       languages: Object.values(languages),
+//     })
+//   );
+//   return countries;
+// }
+
+// console.log(createCountryData);
+
+// const { name, capital, population, flags, languages } = nameCountry[0];
+// const countries = nameCountry.map(
+//   ({ name, capital, population, flags, languages }) => ({
+//     name: name.official,
+//     capital: capital[0],
+//     population,
+//     flag: flags.svg,
+//     languages: Object.values(languages),
+//   })
+// );
+// const countryInfo = countries[0];
+
+// refs.infoCountry.innerHTML = `
+//   <h1 class="country-title">
+//     <img class="country-pic" src="${country.flag}" alt="Flag" width="40"
+//     >${country.name}
+//   </h1>
+//   <p class="country-descr"><span class="country-data">Capital: </span
+//   >${country.capital}</p>
+//   <p class="country-descr"><span class="country-data">Population: </span
+//   >${countryInfo.population.toLocaleString()}</p>
+//   <p class="country-descr"><span class="country-data">Languages: </span
+//   >${countryInfo.languages.join(', ')}</p>`;
 
 // function showError(error) {
 //   Notiflix.Notify.failure(`Перепрошую, у вас помилка`);
@@ -147,11 +169,6 @@ function renderContainerCountry(country) {
 //   );
 //   return;
 // }
-
-function clearCountryElements() {
-  refs.listCountry.innerHTML = '';
-  refs.infoCountry.innerHTML = '';
-}
 
 // `
 //           <li class="country-item">
