@@ -21,4 +21,30 @@ body {
 
 ul {
   list-style: none;
+  padding: 10px;
+}
+
+.country-list {
+  margin: 0;
+}
+
+.country-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  font-size: larger;
+}
+
+.country-pic {
+  margin-right: 10px;
+}
+
+.country-title {
+  display: flex;
+  align-items: center;
+  margin-top: 0;
+}
+
+.country-data {
+  font-weight: bold;
 }

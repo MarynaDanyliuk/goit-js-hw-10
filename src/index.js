@@ -67,34 +67,53 @@ function renderCountries(nameCountry) {
 }
 
 function renderListCountry(countries) {
-  const listCountryItems = countries.map(country => {
-    const listCountryItem = document.createElement('li');
-    const listCountryPicElement = document.createElement('img');
-    listCountryItem.classList.add('country-item');
-    listCountryItem.textContent = country.name;
-    listCountryPicElement.classList.add('country-pic');
-    listCountryItem.innerHTML = `<li class="country-item">
-    <img class="country-pic" src="${country.flag}" alt="Flag" width="40">${country.name}
+  const markup = countries
+    .map(country => {
+      return `<li class="country-item">
+    <img class="country-pic" src="${country.flag}" alt="Flag" width="30">${country.name}
     </li>`;
-    return listCountryItem;
-  });
-
-  refs.listCountry.append(...listCountryItems);
+    })
+    .join(``);
+  refs.listCountry.innerHTML = markup;
 }
 
 function renderContainerCountry(countries) {
   const country = countries[0];
   refs.infoCountry.innerHTML = `<h1 class="country-title">
-      <img class="country-pic" src="${country.flag}" alt="Flag" width="40">${country.name}</h1>
-      <p class="country-descr"><span class="country-data">Capital: </span>${country.capital}</p>
-      <p class="country-descr"><span class="country-data">Population: </span>${country.population}</p>
-      <p class="country-descr"><span class="country-data">Languages: </span>${country.languages}</p>`;
+      <img class="country-pic" src="${country.flag}" alt="Flag" width="40">${
+    country.name
+  }</h1>
+      <p class="country-descr"><span class="country-data">Capital: </span>${
+        country.capital
+      }</p>
+      <p class="country-descr"><span class="country-data">Population: </span>${
+        country.population
+      }</p>
+      <p class="country-descr"><span class="country-data">Languages: </span>${country.languages.join(
+        `, `
+      )}</p>`;
 }
 
 function clearCountryElements() {
   refs.listCountry.innerHTML = '';
   refs.infoCountry.innerHTML = '';
 }
+
+// ________notes________________________________________
+
+// const listCountryItems = countries.map(country => {
+//   const listCountryItem = document.createElement('li');
+//   // const listCountryPicElement = document.createElement('img');
+//   // listCountryItem.classList.add('country-item');
+//   // listCountryItem.textContent = country.name;
+//   // listCountryPicElement.classList.add('country-pic');
+// listCountryItem.innerHTML = `<li class="country-item">
+// <img class="country-pic" src="${country.flag}" alt="Flag" width="30">${country.name}
+// </li>`;
+//   return listCountryItem;
+// });
+
+// refs.listCountry.append(...listCountryItems);
 
 // refs.infoCountry.innerHTML = country
 //   .map(({ name, capital, population, flags, languages }) => {
